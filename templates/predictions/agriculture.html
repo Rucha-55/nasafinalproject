@@ -1,0 +1,408 @@
+{% extends "base.html" %}
+
+{% block title %}Agriculture & Food Security - Satellite Intelligence Platform{% endblock %}
+
+{% block extra_css %}
+<!-- Space UI Theme is already loaded in base.html -->
+<style>
+    /* Three.js Container for Background Animation */
+    #threejs-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+    /* Additional mission-specific styles */
+    .mission-status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        border-radius: 25px;
+        font-weight: 500;
+        font-size: 0.9rem;
+        background: rgba(5,150,105,0.1);
+        border: 1px solid rgba(5,150,105,0.2);
+        color: #059669;
+    }
+    
+    .mission-status-indicator i {
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Three.js Container for Background Animation -->
+<div id="threejs-container"></div>
+
+<div class="space-ui-prediction-container">
+    <div class="space-ui-prediction-header">
+        <h1 class="space-ui-prediction-title">
+            <i class="fas fa-seedling"></i>
+            🌾 Mission Control: Agriculture Intelligence
+        </h1>
+        <p class="space-ui-prediction-subtitle">
+            Advanced satellite intelligence system for analyzing agricultural land availability and food production capacity to assess regional food security and sustainability.
+        </p>
+        <div class="mission-status-indicator">
+            <i class="fas fa-tractor"></i>
+            Agriculture Status: Monitoring
+        </div>
+    </div>
+
+    <div class="prediction-content">
+        <div class="main-content">
+            <h2 style="color: #059669; margin-bottom: 20px;"><i class="fas fa-tractor"></i> Agricultural Assessment & Food Security</h2>
+            
+            <div class="agriculture-grid">
+                <div class="agriculture-card">
+                    <div class="agriculture-icon"><i class="fas fa-seedling"></i></div>
+                    <h4 class="agriculture-title">Agricultural Land</h4>
+                    <p class="agriculture-description">Available land for farming and crop production</p>
+                </div>
+                <div class="agriculture-card">
+                    <div class="agriculture-icon"><i class="fas fa-apple-alt"></i></div>
+                    <h4 class="agriculture-title">Food Production</h4>
+                    <p class="agriculture-description">Capacity for food production and supply</p>
+                </div>
+                <div class="agriculture-card">
+                    <div class="agriculture-icon"><i class="fas fa-city"></i></div>
+                    <h4 class="agriculture-title">Urban Agriculture</h4>
+                    <p class="agriculture-description">Potential for urban farming and green spaces</p>
+                </div>
+                <div class="agriculture-card">
+                    <div class="agriculture-icon"><i class="fas fa-balance-scale"></i></div>
+                    <h4 class="agriculture-title">Sustainability</h4>
+                    <p class="agriculture-description">Long-term agricultural sustainability assessment</p>
+                </div>
+            </div>
+
+            <div id="resultsSection" style="display: none;" class="results-section">
+                <h3><i class="fas fa-chart-line"></i> Agriculture & Food Security Analysis</h3>
+                <div id="predictionResults" class="prediction-result"></div>
+            </div>
+        </div>
+
+        <div class="sidebar">
+            <div class="input-card">
+                <h3><i class="fas fa-calculator"></i> Agricultural Data Input</h3>
+                <div class="input-group">
+                    <label for="vegetationPercentage">Vegetation/Crop Coverage (%)</label>
+                    <input type="number" id="vegetationPercentage" min="0" max="100" step="0.1" placeholder="e.g., 45.8">
+                </div>
+                <div class="input-group">
+                    <label for="landPercentage">Available Land (%)</label>
+                    <input type="number" id="landPercentage" min="0" max="100" step="0.1" placeholder="e.g., 28.2">
+                </div>
+                <div class="input-group">
+                    <label for="waterPercentage">Water Resources (%)</label>
+                    <input type="number" id="waterPercentage" min="0" max="100" step="0.1" placeholder="e.g., 12.5">
+                </div>
+                <div class="input-group">
+                    <label for="buildingPercentage">Urban Development (%)</label>
+                    <input type="number" id="buildingPercentage" min="0" max="100" step="0.1" placeholder="e.g., 8.7">
+                </div>
+                <div class="input-group">
+                    <label for="roadPercentage">Transportation (%)</label>
+                    <input type="number" id="roadPercentage" min="0" max="100" step="0.1" placeholder="e.g., 4.8">
+                </div>
+                <button class="generate-btn" onclick="generateAgriculturePrediction()">
+                    <i class="fas fa-seedling"></i> Analyze Agriculture Potential
+                </button>
+            </div>
+
+            <div id="segmentationCard" class="input-card" style="display: none;">
+                <h3><i class="fas fa-image"></i> Analyzed Image</h3>
+                <div style="text-align: center;">
+                    <img id="segmentationImage" src="" alt="Segmentation Result" style="width: 100%; max-width: 300px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <p id="analysisInfo" style="color: #666; font-size: 0.9rem; margin: 0;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Auto-redirect modal -->
+<div id="analysisRedirectModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; backdrop-filter: blur(5px);">
+    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 40px; border-radius: 20px; max-width: 500px; width: 90%; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.3);">
+        <div style="color: #dc2626; font-size: 3rem; margin-bottom: 20px;">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 style="color: #333; margin-bottom: 15px; font-size: 1.5rem;">No Analysis Data Available</h3>
+        <p style="color: #666; margin-bottom: 30px; line-height: 1.6;">
+            To generate agriculture potential analysis, you need land use data first. 
+            Choose how you'd like to analyze an area:
+        </p>
+        <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+            <button onclick="redirectToUpload()" style="background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: transform 0.3s ease;">
+                <i class="fas fa-upload"></i>
+                Upload Image
+            </button>
+            <button onclick="redirectToMapAnalysis()" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: white; border: none; padding: 12px 24px; border-radius: 10px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: transform 0.3s ease;">
+                <i class="fas fa-map"></i>
+                Analyze Map Area
+            </button>
+        </div>
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+            <p style="color: #666; font-size: 0.9rem; margin: 0;">
+                <i class="fas fa-info-circle" style="color: #10b981;"></i>
+                After analysis, you'll be automatically returned here with the data loaded.
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-load latest analysis data when page loads
+window.addEventListener('DOMContentLoaded', function() {
+    loadLatestAnalysis();
+});
+
+async function loadLatestAnalysis() {
+    try {
+        const response = await fetch('/api/latest-analysis');
+        const data = await response.json();
+        
+        if (data.success && data.data.statistics) {
+            const stats = data.data.statistics;
+            
+            // Populate input fields with analysis data
+            if (stats.Vegetation) document.getElementById('vegetationPercentage').value = stats.Vegetation.percentage.toFixed(1);
+            if (stats.Land) document.getElementById('landPercentage').value = stats.Land.percentage.toFixed(1);
+            if (stats.Water) document.getElementById('waterPercentage').value = stats.Water.percentage.toFixed(1);
+            if (stats.Building) document.getElementById('buildingPercentage').value = stats.Building.percentage.toFixed(1);
+            if (stats.Road) document.getElementById('roadPercentage').value = stats.Road.percentage.toFixed(1);
+            
+            // Display segmentation image if available
+            const segmentationCard = document.getElementById('segmentationCard');
+            const segmentationImage = document.getElementById('segmentationImage');
+            const analysisInfo = document.getElementById('analysisInfo');
+            
+            if (data.data.segmented_image || data.data.chart_image) {
+                segmentationCard.style.display = 'block';
+                
+                // Prefer segmented image, fallback to chart
+                const imageUrl = data.data.segmented_image || data.data.chart_image;
+                segmentationImage.src = '/' + imageUrl;
+                
+                analysisInfo.textContent = `From: ${data.data.image_name}`;
+            } else {
+                segmentationCard.style.display = 'none';
+            }
+            
+            // Show notification that data was loaded
+            showDataLoadedNotification(`Analysis data from ${data.data.image_name} loaded automatically!`);
+        } else {
+            console.log('No analysis data available');
+            document.getElementById('segmentationCard').style.display = 'none';
+        }
+    } catch (error) {
+        console.log('Could not load latest analysis:', error);
+        document.getElementById('segmentationCard').style.display = 'none';
+    }
+}
+
+function showDataLoadedNotification(message = 'Analysis data loaded automatically!') {
+    // Create and show a subtle notification
+    const notification = document.createElement('div');
+    notification.innerHTML = `
+        <div style="position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, #10b981, #059669); color: white; padding: 15px 20px; border-radius: 10px; z-index: 1000; box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3); transform: translateX(100%); transition: transform 0.3s ease;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-check-circle"></i>
+                <span>${message}</span>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    setTimeout(() => {
+        notification.firstElementChild.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        notification.firstElementChild.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            document.body.removeChild(notification);
+        }, 300);
+    }, 3000);
+}
+
+function showAnalysisRedirectModal() {
+    document.getElementById('analysisRedirectModal').style.display = 'block';
+}
+
+function redirectToUpload() {
+    // Store current page info for return navigation
+    sessionStorage.setItem('returnPage', 'agriculture');
+    sessionStorage.setItem('returnPageName', 'Agriculture Potential Analysis');
+    
+    // Redirect to upload analysis
+    window.location.href = '/analysis';
+}
+
+function redirectToMapAnalysis() {
+    // Store current page info for return navigation  
+    sessionStorage.setItem('returnPage', 'agriculture');
+    sessionStorage.setItem('returnPageName', 'Agriculture Potential Analysis');
+    
+    // Redirect to map analysis
+    window.location.href = '/analysis#map';
+}
+
+async function generateAgriculturePrediction() {
+    const vegetationPercentage = parseFloat(document.getElementById('vegetationPercentage').value) || 0;
+    const landPercentage = parseFloat(document.getElementById('landPercentage').value) || 0;
+    const waterPercentage = parseFloat(document.getElementById('waterPercentage').value) || 0;
+    const buildingPercentage = parseFloat(document.getElementById('buildingPercentage').value) || 0;
+    const roadPercentage = parseFloat(document.getElementById('roadPercentage').value) || 0;
+
+    if (vegetationPercentage + landPercentage + waterPercentage + buildingPercentage + roadPercentage === 0) {
+        // Show the redirect modal instead of alert
+        showAnalysisRedirectModal();
+        return;
+    }
+
+    const resultsSection = document.getElementById('resultsSection');
+    const resultsDiv = document.getElementById('predictionResults');
+    const generateBtn = document.querySelector('.generate-btn');
+
+    resultsSection.style.display = 'block';
+    resultsDiv.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Analyzing agricultural potential...</div>';
+    generateBtn.disabled = true;
+
+    try {
+        const response = await fetch('/generate-prediction', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                type: 'agriculture',
+                land_use_stats: {
+                    'Vegetation': { percentage: vegetationPercentage, total_pixels: Math.round(vegetationPercentage * 1000) },
+                    'Land': { percentage: landPercentage, total_pixels: Math.round(landPercentage * 1000) },
+                    'Water': { percentage: waterPercentage, total_pixels: Math.round(waterPercentage * 1000) },
+                    'Building': { percentage: buildingPercentage, total_pixels: Math.round(buildingPercentage * 1000) },
+                    'Road': { percentage: roadPercentage, total_pixels: Math.round(roadPercentage * 1000) }
+                }
+            })
+        });
+
+        const data = await response.json();
+        if (data.success) {
+            resultsDiv.innerHTML = `<div class="prediction-result">${data.prediction}</div>`;
+        } else {
+            resultsDiv.innerHTML = `<div class="error">Error: ${data.error}</div>`;
+        }
+    } catch (error) {
+        resultsDiv.innerHTML = `<div class="error">Error generating prediction: ${error.message}</div>`;
+    } finally {
+        generateBtn.disabled = false;
+    }
+}
+
+// Three.js Agriculture Animation
+class AgricultureSpaceAnimation {
+    constructor() {
+        this.container = document.getElementById('threejs-container');
+        if (!this.container) return;
+        
+        this.scene = new THREE.Scene();
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        this.setupRenderer();
+        this.createAgricultureEnvironment();
+        this.animate();
+        this.handleResize();
+    }
+
+    setupRenderer() {
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setClearColor(0x000000, 0);
+        this.container.appendChild(this.renderer.domElement);
+    }
+
+    createAgricultureEnvironment() {
+        // Create floating crop particles
+        this.cropParticles = [];
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = new THREE.Mesh(
+                new THREE.SphereGeometry(0.2, 8, 8),
+                new THREE.MeshBasicMaterial({ 
+                    color: 0x2fe7a9,
+                    transparent: true,
+                    opacity: 0.6
+                })
+            );
+            
+            particle.position.set(
+                (Math.random() - 0.5) * 100,
+                (Math.random() - 0.5) * 100,
+                (Math.random() - 0.5) * 100
+            );
+            
+            particle.velocity = new THREE.Vector3(
+                (Math.random() - 0.5) * 0.01,
+                (Math.random() - 0.5) * 0.01,
+                (Math.random() - 0.5) * 0.01
+            );
+            
+            this.scene.add(particle);
+            this.cropParticles.push(particle);
+        }
+
+        // Add ambient light
+        const ambientLight = new THREE.AmbientLight(0x404040, 0.3);
+        this.scene.add(ambientLight);
+    }
+
+    animate() {
+        requestAnimationFrame(() => this.animate());
+
+        // Animate crop particles
+        this.cropParticles.forEach(particle => {
+            particle.position.add(particle.velocity);
+            particle.rotation.y += 0.01;
+            
+            // Wrap around screen
+            if (particle.position.x > 50) particle.position.x = -50;
+            if (particle.position.x < -50) particle.position.x = 50;
+            if (particle.position.y > 50) particle.position.y = -50;
+            if (particle.position.y < -50) particle.position.y = 50;
+            if (particle.position.z > 50) particle.position.z = -50;
+            if (particle.position.z < -50) particle.position.z = 50;
+        });
+
+        this.renderer.render(this.scene, this.camera);
+    }
+
+    handleResize() {
+        window.addEventListener('resize', () => {
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    }
+}
+
+// Initialize Three.js animation
+document.addEventListener('DOMContentLoaded', () => {
+    new AgricultureSpaceAnimation();
+});
+</script>
+{% endblock %}

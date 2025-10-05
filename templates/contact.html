@@ -1,0 +1,270 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Satellite Intelligence Platform{% endblock %}
+
+{% block content %}
+<style>
+    /* Space Theme Overrides for Contact Page */
+    .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 40px 20px;
+    }
+    
+    .content-card {
+        background: var(--card-bg);
+        backdrop-filter: blur(12px);
+        border-radius: 15px;
+        padding: 40px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+    }
+    
+    .content-card:hover {
+        background: var(--card-bg-hover);
+        border-color: var(--accent-1);
+    }
+    
+    .content-card h2 {
+        color: var(--accent-1);
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        font-weight: 600;
+    }
+    
+    .content-card h3,
+    .content-card h4 {
+        color: var(--text-primary);
+    }
+    
+    .content-card p {
+        color: var(--text-secondary);
+    }
+    
+    .content-card label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        font-weight: 500;
+    }
+    
+    .content-card input,
+    .content-card select,
+    .content-card textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+    }
+    
+    .content-card input:focus,
+    .content-card select:focus,
+    .content-card textarea:focus {
+        outline: none;
+        border-color: var(--accent-1);
+        background: rgba(255, 255, 255, 0.08);
+    }
+    
+    .content-card input::placeholder,
+    .content-card textarea::placeholder {
+        color: var(--text-secondary);
+        opacity: 0.6;
+    }
+    
+    .contact-icon-box {
+        background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+        width: 50px;
+        height: 50px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        box-shadow: 0 4px 12px rgba(0, 210, 255, 0.3);
+    }
+    
+    .social-link {
+        background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+    
+    .social-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 16px rgba(0, 210, 255, 0.4);
+    }
+    
+    .partnership-icon {
+        background: rgba(0, 210, 255, 0.1);
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 15px;
+        color: var(--accent-1);
+        font-size: 1.5rem;
+        border: 1px solid rgba(0, 210, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+    
+    .partnership-icon:hover {
+        background: rgba(0, 210, 255, 0.15);
+        transform: scale(1.1);
+    }
+    
+    @media (max-width: 768px) {
+        .contact-grid {
+            grid-template-columns: 1fr !important;
+        }
+    }
+</style>
+
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="page-subtitle">
+            Get in touch with our team for support, partnerships, or custom solutions.
+        </p>
+    </div>
+
+    <div class="contact-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px;">
+        <div class="content-card">
+            <h2>
+                <i class="fas fa-envelope"></i> Get In Touch
+            </h2>
+            <form style="display: flex; flex-direction: column; gap: 20px;">
+                <div>
+                    <label>Name</label>
+                    <input type="text" placeholder="Your name">
+                </div>
+                <div>
+                    <label>Email</label>
+                    <input type="email" placeholder="your.email@example.com">
+                </div>
+                <div>
+                    <label>Subject</label>
+                    <select>
+                        <option>General Inquiry</option>
+                        <option>Technical Support</option>
+                        <option>Partnership Opportunity</option>
+                        <option>Custom Solution Request</option>
+                        <option>Research Collaboration</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Message</label>
+                    <textarea rows="5" style="resize: vertical;" placeholder="Tell us about your project or requirements..."></textarea>
+                </div>
+                <button type="submit" class="space-ui-btn" style="align-self: flex-start;">
+                    <i class="fas fa-paper-plane"></i>
+                    Send Message
+                </button>
+            </form>
+        </div>
+
+        <div class="content-card">
+            <h2>
+                <i class="fas fa-info-circle"></i> Contact Information
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 25px;">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="contact-icon-box">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Email</h4>
+                        <p>contact@satelliteiq.com</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="contact-icon-box">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Phone</h4>
+                        <p>+1 (555) 123-4567</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="contact-icon-box">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Address</h4>
+                        <p>123 Tech Innovation Drive<br>Silicon Valley, CA 94025</p>
+                    </div>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <div class="contact-icon-box">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div>
+                        <h4 style="margin-bottom: 5px;">Business Hours</h4>
+                        <p>Monday - Friday: 9:00 AM - 6:00 PM PST<br>Weekend: Emergency support only</p>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+                <h3 style="color: var(--accent-1); margin-bottom: 15px;">Follow Us</h3>
+                <div style="display: flex; gap: 15px;">
+                    <a href="#" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="social-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-card" style="margin-top: 40px;">
+        <h2>
+            <i class="fas fa-handshake"></i> Partnership Opportunities
+        </h2>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div style="text-align: center; padding: 20px;">
+                <div class="partnership-icon">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h4 style="margin-bottom: 10px;">Research Institutions</h4>
+                <p style="font-size: 0.9rem;">Collaborate on cutting-edge research in satellite imagery analysis and AI applications.</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div class="partnership-icon">
+                    <i class="fas fa-building"></i>
+                </div>
+                <h4 style="margin-bottom: 10px;">Government Agencies</h4>
+                <p style="font-size: 0.9rem;">Partner with us for large-scale urban planning and environmental monitoring projects.</p>
+            </div>
+            <div style="text-align: center; padding: 20px;">
+                <div class="partnership-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h4 style="margin-bottom: 10px;">Tech Companies</h4>
+                <p style="font-size: 0.9rem;">Integrate our satellite intelligence APIs into your applications and platforms.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

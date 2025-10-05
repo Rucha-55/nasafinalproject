@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Satellite Intelligence Platform{% endblock %}</title>
+    
+    <!-- CSS Libraries -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Space UI Theme -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/space-ui-theme.css') }}">
+    
+    <!-- Custom Styles -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #667eea;
+            text-decoration: none;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        .nav-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            min-width: 220px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 12px 20px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(102, 126, 234, 0.05);
+            color: #667eea;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 70px;
+            min-height: calc(100vh - 70px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 40px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .footer-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .footer-link:hover {
+            color: var(--accent-1);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 30px;
+            padding-top: 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                transition: left 0.3s ease;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-dropdown {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background: rgba(102, 126, 234, 0.05);
+                margin-top: 10px;
+            }
+        }
+
+        /* Page Content Styles */
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .page-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.9);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Content Cards */
+        .content-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(102, 126, 234, 0.1);
+            color: #667eea;
+            border: 2px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(102, 126, 234, 0.15);
+            border-color: #667eea;
+        }
+    </style>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body class="space-ui-root">
+    <!-- Header -->
+    <header class="space-ui-header">
+        <nav class="space-ui-nav">
+            <a href="/" class="space-ui-logo">
+                <i class="fas fa-satellite"></i>
+                SatelliteIQ
+            </a>
+            
+            <ul class="space-ui-nav-menu" id="navMenu">
+                <li class="space-ui-nav-item">
+                    <a href="/" class="space-ui-nav-link">Home</a>
+                </li>
+                <li class="space-ui-nav-item">
+                    <a href="/analysis" class="space-ui-nav-link">Analysis</a>
+                </li>
+                <li class="space-ui-nav-item">
+                    <a href="#" class="space-ui-nav-link">Predictions <i class="fas fa-chevron-down"></i></a>
+                    <div class="space-ui-dropdown">
+                        <a href="/predictions/urban-growth" class="space-ui-dropdown-item">
+                            <i class="fas fa-city"></i> Urban Growth
+                        </a>
+                        <a href="/predictions/environmental" class="space-ui-dropdown-item">
+                            <i class="fas fa-leaf"></i> Environmental Impact
+                        </a>
+                        <a href="/predictions/infrastructure" class="space-ui-dropdown-item">
+                            <i class="fas fa-road"></i> Infrastructure Planning
+                        </a>
+                        <a href="/predictions/health" class="space-ui-dropdown-item">
+                            <i class="fas fa-heartbeat"></i> Public Health
+                        </a>
+                        <a href="/predictions/disaster" class="space-ui-dropdown-item">
+                            <i class="fas fa-exclamation-triangle"></i> Disaster Analysis
+                        </a>
+                        <a href="/predictions/agriculture" class="space-ui-dropdown-item">
+                            <i class="fas fa-seedling"></i> Agriculture
+                        </a>
+                    </div>
+                </li>
+                <li class="space-ui-nav-item">
+                    <a href="/about" class="space-ui-nav-link">About</a>
+                </li>
+                <li class="space-ui-nav-item">
+                    <a href="/contact" class="space-ui-nav-link">Contact</a>
+                </li>
+            </ul>
+            
+            <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="space-ui-footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h4><i class="fas fa-satellite"></i> SatelliteIQ</h4>
+                <p>
+                    Advanced satellite imagery analysis powered by AI to provide insights for urban planning, 
+                    environmental monitoring, and infrastructure development.
+                </p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Analysis Tools</h4>
+                <a href="/analysis" class="footer-link">Image Analysis</a>
+                <a href="/analysis" class="footer-link">Map Analysis</a>
+                <a href="/predictions/urban-growth" class="footer-link">Urban Growth</a>
+                <a href="/predictions/environmental" class="footer-link">Environmental</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Predictions</h4>
+                <a href="/predictions/infrastructure" class="footer-link">Infrastructure</a>
+                <a href="/predictions/health" class="footer-link">Public Health</a>
+                <a href="/predictions/disaster" class="footer-link">Disaster Analysis</a>
+                <a href="/predictions/agriculture" class="footer-link">Agriculture</a>
+            </div>
+            
+            <div class="footer-section">
+                <h4>Resources</h4>
+                <a href="/about" class="footer-link">About</a>
+                <a href="/contact" class="footer-link">Contact</a>
+                <a href="/docs" class="footer-link">Documentation</a>
+                <a href="/api" class="footer-link">API Reference</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 SatelliteIQ. All rights reserved. | Powered by AI & Satellite Technology</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Enhanced Mobile menu toggle with animations
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+            
+            // Add animation to menu items
+            const menuItems = navMenu.querySelectorAll('.space-ui-nav-item');
+            menuItems.forEach((item, index) => {
+                if (navMenu.classList.contains('active')) {
+                    item.style.animation = `slideInFromLeft 0.3s ease ${index * 0.1}s both`;
+                } else {
+                    item.style.animation = 'none';
+                }
+            });
+        });
+
+        // Set active navigation item with enhanced styling
+        const currentPath = window.location.pathname;
+        const navLinks = document.querySelectorAll('.space-ui-nav-link');
+        navLinks.forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('active');
+                link.style.color = 'var(--accent-1)';
+                link.style.background = 'rgba(0,210,255,0.1)';
+            }
+        });
+
+        // Enhanced smooth scrolling with easing
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const targetPosition = target.offsetTop - 80; // Account for fixed header
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Add loading animation
+        window.addEventListener('load', function() {
+            document.body.classList.add('loaded');
+        });
+
+        // Enhanced scroll effects - Fixed header behavior
+        let lastScrollTop = 0;
+        let ticking = false;
+        
+        function updateHeader() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const header = document.querySelector('.space-ui-header');
+            
+            if (!header) return;
+            
+            // Only hide header when scrolling down significantly
+            if (scrollTop > lastScrollTop && scrollTop > 200) {
+                // Scrolling down - hide header
+                header.style.transform = 'translateY(-100%)';
+                header.style.transition = 'transform 0.3s ease-in-out';
+            } else if (scrollTop < lastScrollTop || scrollTop < 100) {
+                // Scrolling up or near top - show header
+                header.style.transform = 'translateY(0)';
+                header.style.transition = 'transform 0.3s ease-in-out';
+            }
+            
+            lastScrollTop = scrollTop;
+            ticking = false;
+        }
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateHeader);
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+
+        // Add particle effect to header
+        function createParticles() {
+            const header = document.querySelector('.space-ui-header');
+            if (!header) return;
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'header-particle';
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 2px;
+                    height: 2px;
+                    background: var(--accent-1);
+                    border-radius: 50%;
+                    pointer-events: none;
+                    opacity: 0.6;
+                    animation: float 3s infinite ease-in-out;
+                    animation-delay: ${Math.random() * 3}s;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                header.appendChild(particle);
+            }
+        }
+
+        // Initialize particles on load
+        document.addEventListener('DOMContentLoaded', createParticles);
+    </script>
+
+    <!-- Enhanced CSS Animations -->
+    <style>
+        @keyframes slideInFromLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.05);
+                opacity: 0.8;
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                box-shadow: 0 0 5px var(--accent-1);
+            }
+            50% {
+                box-shadow: 0 0 20px var(--accent-1), 0 0 30px var(--accent-1);
+            }
+        }
+
+        .space-ui-header {
+            transition: transform 0.3s ease-in-out;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            will-change: transform;
+        }
+
+        /* Footer positioning - non-intrusive */
+        .space-ui-root {
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .space-ui-root .main-content {
+            min-height: calc(100vh - 70px);
+            position: relative;
+        }
+
+        /* Footer styling - consistent with space theme */
+        .space-ui-footer {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        .space-ui-footer::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-1), transparent);
+            opacity: 0.3;
+        }
+
+        /* Ensure footer doesn't interfere with homepage content */
+        .homepage-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .space-ui-logo {
+            animation: pulse 2s infinite;
+        }
+
+        .space-ui-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .space-ui-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .space-ui-btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .space-ui-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .space-ui-card:hover {
+            animation: glow 2s infinite;
+        }
+
+        /* Loading animation */
+        body:not(.loaded) {
+            overflow: hidden;
+        }
+
+        body:not(.loaded)::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--space-900);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body:not(.loaded)::after {
+            content: '🚀';
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            z-index: 10000;
+            animation: pulse 1s infinite;
+        }
+    </style>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

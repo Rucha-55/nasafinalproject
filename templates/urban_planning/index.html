@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comprehensive Urban Planning Analyzer - 10 Objectives</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.css"/>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+    
+    <style>
+        /* DARK SPACE THEME */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0a0e27;
+            overflow: hidden;
+        }
+        
+        #map-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+        }
+        
+        #map {
+            position: fixed;
+            top: 0;
+            left: 320px; /* Space for filter panel */
+            right: 380px; /* Space for sidebar */
+            bottom: 0;
+            height: 100vh;
+            z-index: 1;
+        }
+        
+        /* Filter Panel - Left Side */
+        #filter-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 320px;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            background: linear-gradient(180deg, #1a1f3a 0%, #0f1729 100%);
+            box-shadow: 2px 0 20px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-right: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        /* Sidebar - Right Side */
+        #sidebar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 380px;
+            height: 100vh;
+            overflow-y: auto;
+            z-index: 1000;
+            background: linear-gradient(180deg, #1a1f3a 0%, #0f1729 100%);
+            box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-left: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        /* Custom Scrollbar - Dark Theme */
+        #filter-panel::-webkit-scrollbar,
+        #sidebar::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        #filter-panel::-webkit-scrollbar-track,
+        #sidebar::-webkit-scrollbar-track {
+            background: rgba(20, 30, 50, 0.5);
+            border-radius: 10px;
+        }
+        
+        #filter-panel::-webkit-scrollbar-thumb,
+        #sidebar::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #4a90e2 0%, #357abd 100%);
+            border-radius: 10px;
+            border: 2px solid rgba(20, 30, 50, 0.5);
+        }
+        
+        #filter-panel::-webkit-scrollbar-thumb:hover,
+        #sidebar::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #5aa0f2 0%, #458acc 100%);
+        }
+        
+        .filter-section {
+            margin-bottom: 20px;
+            background: rgba(30, 40, 70, 0.6);
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid rgba(100, 150, 255, 0.15);
+            backdrop-filter: blur(10px);
+        }
+        
+        .filter-section h6 {
+            font-weight: bold;
+            color: #a0d2ff;
+            margin-bottom: 12px;
+            font-size: 15px;
+            border-bottom: 2px solid rgba(100, 150, 255, 0.3);
+            padding-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .filter-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            transition: all 0.3s;
+            background: rgba(20, 30, 50, 0.4);
+            border: 1px solid rgba(100, 150, 255, 0.1);
+        }
+        
+        .filter-item:hover {
+            background: rgba(74, 144, 226, 0.2);
+            border-color: rgba(100, 150, 255, 0.4);
+            transform: translateX(5px);
+        }
+        
+        .filter-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4a90e2;
+        }
+        
+        .filter-item label {
+            margin: 0;
+            cursor: pointer;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #e0e8f5;
+            font-weight: 500;
+        }
+        
+        .color-indicator {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            margin-right: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 20px currentColor;
+        }
+        
+        .layer-count {
+            margin-left: auto;
+            background: rgba(74, 144, 226, 0.3);
+            color: #a0d2ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .legend-panel {
+            background: rgba(30, 40, 70, 0.7);
+            padding: 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .legend-title {
+            font-weight: bold;
+            color: #a0d2ff;
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 13px;
+            color: #c0d5f0;
+        }
+        
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            background: rgba(30, 40, 70, 0.7);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.3);
+        }
+        
+        .card-header {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            border-radius: 12px 12px 0 0 !important;
+            font-weight: bold;
+            padding: 15px 20px;
+            border-bottom: 2px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .card-body {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .card-body p {
+            color: #ffffff;
+            font-weight: 500;
+        }
+        
+        .card-body strong {
+            color: #a0d2ff;
+            font-weight: 600;
+        }
+        
+        .card-body small {
+            color: #e0e8f5;
+            font-weight: 400;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            color: white;
+            padding: 20px 15px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(74, 144, 226, 0.4);
+            transition: transform 0.3s;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(74, 144, 226, 0.6);
+        }
+        
+        .stat-number {
+            font-size: 42px;
+            font-weight: bold;
+            line-height: 1.2;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .stat-label {
+            font-size: 13px;
+            opacity: 0.95;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 35px;
+            font-weight: bold;
+            transition: all 0.3s;
+            color: white;
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(74, 144, 226, 0.5);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #e94560 0%, #c72c41 100%);
+            border: none;
+            border-radius: 25px;
+            padding: 12px 35px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+        }
+        
+        .btn-danger:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 25px rgba(233, 69, 96, 0.5);
+        }
+        
+        .badge {
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .pulsing-marker {
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0.7;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 14, 39, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(10px);
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(74, 144, 226, 0.3);
+            border-top: 4px solid #4a90e2;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .accordion-button {
+            background: rgba(30, 40, 70, 0.6) !important;
+            color: #a0d2ff !important;
+            border: 1px solid rgba(100, 150, 255, 0.2) !important;
+        }
+        
+        .accordion-button:not(.collapsed) {
+            background: rgba(74, 144, 226, 0.3) !important;
+            color: #fff !important;
+        }
+        
+        .accordion-body {
+            background: rgba(20, 30, 50, 0.5);
+            color: #c0d5f0;
+            border: 1px solid rgba(100, 150, 255, 0.1);
+        }
+        
+        /* Leaflet popup styling */
+        .leaflet-popup-content-wrapper {
+            background: rgba(20, 30, 50, 0.95);
+            color: #e0e8f5;
+            border: 1px solid rgba(100, 150, 255, 0.3);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .leaflet-popup-tip {
+            background: rgba(20, 30, 50, 0.95);
+        }
+        
+        /* Panel Headers */
+        .panel-header {
+            color: #a0d2ff;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(100, 150, 255, 0.3);
+            text-align: center;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            #map {
+                left: 280px;
+                right: 320px;
+            }
+            #filter-panel {
+                width: 280px;
+            }
+            #sidebar {
+                width: 320px;
+            }
+        }
+        
+        /* Custom tooltip styles */
+        .facility-tooltip {
+            background: rgba(20, 30, 50, 0.95);
+            border: 2px solid #4a90e2;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(74, 144, 226, 0.5);
+            color: #e0e8f5;
+        }
+        
+        .suggestion-tooltip {
+            background: rgba(233, 69, 96, 0.95);
+            border: 2px solid white;
+            color: white;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 15px rgba(233, 69, 96, 0.6);
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* Override duplicate Leaflet styles */
+        .leaflet-container {
+            background: #f0f0f0 !important;
+        }
+        
+        /* Make sure popups are visible */
+        .leaflet-popup-content-wrapper {
+            background: rgba(255, 255, 255, 0.98);
+            color: #333;
+        }
+        
+        .leaflet-popup-content strong {
+            color: #333;
+        }
+        
+        .accordion-button {
+            font-weight: 600;
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+        
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .urgency-critical {
+            background: linear-gradient(135deg, #ff4757, #ff6348);
+        }
+        
+        .urgency-high {
+            background: linear-gradient(135deg, #ff9f43, #ffa502);
+        }
+        
+        .urgency-moderate {
+            background: linear-gradient(135deg, #ffd32a, #ffec3d);
+            color: #333;
+        }
+        
+        .urgency-low {
+            background: linear-gradient(135deg, #26de81, #20bf6b);
+        }
+        
+        .layer-count {
+            font-size: 11px;
+            color: #666;
+            margin-left: auto;
+        }
+        
+        .toggle-all-btn {
+            width: 100%;
+            margin-bottom: 15px;
+            border-radius: 25px;
+        }
+        
+        @media (max-width: 1400px) {
+            #filter-panel {
+                width: 280px;
+            }
+            
+            #sidebar {
+                width: 320px;
+            }
+        }
+        
+        @media (max-width: 1200px) {
+            #filter-panel {
+                width: 260px;
+                font-size: 13px;
+            }
+            
+            #sidebar {
+                width: 300px;
+            }
+            
+            .color-indicator {
+                width: 16px;
+                height: 16px;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            #map-container {
+                flex-direction: column;
+            }
+            
+            #filter-panel {
+                position: relative;
+                width: 100%;
+                max-height: 200px;
+                top: 0;
+                left: 0;
+                margin: 0;
+                border-radius: 0;
+                display: flex;
+                overflow-x: auto;
+                overflow-y: hidden;
+                flex-wrap: nowrap;
+            }
+            
+            #sidebar {
+                position: relative;
+                width: 100%;
+                max-height: none;
+                top: 0;
+                right: 0;
+                margin: 0;
+                border-radius: 0;
+                order: 3;
+            }
+            
+            #map {
+                height: 50vh;
+                order: 2;
+            }
+            
+            .filter-section {
+                min-width: 250px;
+                margin-right: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #filter-panel {
+                max-height: 150px;
+                padding: 10px;
+            }
+            
+            #sidebar {
+                padding: 15px;
+            }
+            
+            #map {
+                height: 40vh;
+            }
+            
+            h4, h5 {
+                font-size: 16px;
+            }
+            
+            .stat-number {
+                font-size: 24px;
+            }
+            
+            .card {
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            #filter-panel {
+                padding: 8px;
+                font-size: 12px;
+            }
+            
+            #sidebar {
+                padding: 10px;
+            }
+            
+            .filter-item {
+                padding: 5px;
+            }
+            
+            .color-indicator {
+                width: 14px;
+                height: 14px;
+            }
+            
+            .toggle-all-btn {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="map-container">
+        <div id="map"></div>
+        
+        <!-- Filter Panel - Left Side -->
+        <div id="filter-panel">
+            <div class="panel-header">
+                <i class="fas fa-filter"></i> Layer Filters
+            </div>
+            
+            <button class="btn btn-sm btn-primary toggle-all-btn w-100" onclick="toggleAllLayers()">
+                <i class="fas fa-eye"></i> Toggle All Layers
+            </button>
+            
+            <div class="legend-panel">
+                <div class="legend-title">🎨 Color Legend</div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #007bff;"></span> Healthcare 🏥
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #28a745;"></span> Food Access 🍽️
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #8b4513;"></span> Housing 🏠
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #6f42c1;"></span> Transportation 🚌
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #90ee90;"></span> Parks 🌳
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #ffc107;"></span> Industrial 🏭
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #17a2b8;"></span> Water Bodies 💧
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #d4a76a;"></span> Agriculture 🌾
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #6c757d;"></span> Waste 🗑️
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #ff8c00;"></span> Energy ⚡
+                </div>
+                <div class="legend-item">
+                    <span class="color-indicator" style="background: #dc3545; animation: pulse 1.5s infinite;"></span> <strong style="color: #ff6b6b;">Suggestions</strong>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h6><i class="fas fa-layer-group"></i> Existing Facilities</h6>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-healthcare" checked onchange="toggleLayer('healthcare')">
+                    <label for="layer-healthcare">
+                        <span class="color-indicator" style="background: #007bff;"></span>
+                        Healthcare
+                        <span class="layer-count" id="count-healthcare">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-food" checked onchange="toggleLayer('food')">
+                    <label for="layer-food">
+                        <span class="color-indicator" style="background: #28a745;"></span>
+                        Food Access
+                        <span class="layer-count" id="count-food">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-housing" checked onchange="toggleLayer('housing')">
+                    <label for="layer-housing">
+                        <span class="color-indicator" style="background: #8b4513;"></span>
+                        Housing
+                        <span class="layer-count" id="count-housing">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-transportation" checked onchange="toggleLayer('transportation')">
+                    <label for="layer-transportation">
+                        <span class="color-indicator" style="background: #6f42c1;"></span>
+                        Transportation
+                        <span class="layer-count" id="count-transportation">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-parks" checked onchange="toggleLayer('parks')">
+                    <label for="layer-parks">
+                        <span class="color-indicator" style="background: #90ee90;"></span>
+                        Parks
+                        <span class="layer-count" id="count-parks">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-industrial" checked onchange="toggleLayer('industrial')">
+                    <label for="layer-industrial">
+                        <span class="color-indicator" style="background: #ffc107;"></span>
+                        Industrial
+                        <span class="layer-count" id="count-industrial">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-water" checked onchange="toggleLayer('water')">
+                    <label for="layer-water">
+                        <span class="color-indicator" style="background: #17a2b8;"></span>
+                        Water Bodies
+                        <span class="layer-count" id="count-water">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-agriculture" checked onchange="toggleLayer('agriculture')">
+                    <label for="layer-agriculture">
+                        <span class="color-indicator" style="background: #d4a76a;"></span>
+                        Agriculture
+                        <span class="layer-count" id="count-agriculture">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-waste" checked onchange="toggleLayer('waste')">
+                    <label for="layer-waste">
+                        <span class="color-indicator" style="background: #6c757d;"></span>
+                        Waste Facilities
+                        <span class="layer-count" id="count-waste">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="layer-energy" checked onchange="toggleLayer('energy')">
+                    <label for="layer-energy">
+                        <span class="color-indicator" style="background: #ff8c00;"></span>
+                        Energy
+                        <span class="layer-count" id="count-energy">0</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div class="filter-section">
+                <h6><i class="fas fa-map-marker-alt"></i> Suggestions (RED DOTS)</h6>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-healthcare" checked onchange="toggleSuggestions('healthcare')">
+                    <label for="suggest-healthcare">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Healthcare Suggestions
+                        <span class="layer-count" id="suggest-count-healthcare">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-food" checked onchange="toggleSuggestions('food')">
+                    <label for="suggest-food">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Food Suggestions
+                        <span class="layer-count" id="suggest-count-food">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-parks" checked onchange="toggleSuggestions('parks')">
+                    <label for="suggest-parks">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Parks Suggestions
+                        <span class="layer-count" id="suggest-count-parks">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-transportation" checked onchange="toggleSuggestions('transportation')">
+                    <label for="suggest-transportation">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Transport Suggestions
+                        <span class="layer-count" id="suggest-count-transportation">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-waste" checked onchange="toggleSuggestions('waste')">
+                    <label for="suggest-waste">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Waste Suggestions
+                        <span class="layer-count" id="suggest-count-waste">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-energy" checked onchange="toggleSuggestions('energy')">
+                    <label for="suggest-energy">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Energy Suggestions
+                        <span class="layer-count" id="suggest-count-energy">0</span>
+                    </label>
+                </div>
+                
+                <div class="filter-item">
+                    <input type="checkbox" id="suggest-housing" checked onchange="toggleSuggestions('housing')">
+                    <label for="suggest-housing">
+                        <span class="color-indicator pulsing-marker" style="background: #dc3545;"></span>
+                        Housing Suggestions
+                        <span class="layer-count" id="suggest-count-housing">0</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar - Right Side -->
+        <div id="sidebar">
+            <div class="panel-header">
+                <i class="fas fa-city"></i> Analysis Dashboard
+            </div>
+            
+            <!-- Instructions -->
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-info-circle"></i> Quick Start Guide
+                </div>
+                <div class="card-body">
+                    <ol style="font-size: 13px; padding-left: 20px; line-height: 1.8;">
+                        <li>🎯 Use the <strong>square/polygon tool</strong> to select an area</li>
+                        <li>⏳ System fetches <strong>ALL 10 categories</strong> of data</li>
+                        <li>📊 View statistics, AI recommendations, and suggestions</li>
+                        <li>🎨 Use <strong>left panel</strong> to filter layers</li>
+                        <li>🔴 <strong>RED pulsing dots</strong> = optimal suggestion locations</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <!-- Area Classification -->
+            <div id="classification-card" class="card" style="display:none;">
+                <div class="card-header">
+                    <i class="fas fa-map"></i> Area Classification
+                </div>
+                <div class="card-body">
+                    <div id="classification-content"></div>
+                </div>
+            </div>
+            
+            <!-- Statistics -->
+            <div id="stats-card" class="card" style="display:none;">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar"></i> Facility Statistics
+                </div>
+                <div class="card-body" id="stats-content"></div>
+            </div>
+            
+            <!-- AI Recommendations -->
+            <div id="recommendations-card" class="card" style="display:none;">
+                <div class="card-header">
+                    <i class="fas fa-robot"></i> AI Recommendations
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="recommendationsAccordion"></div>
+                </div>
+            </div>
+            
+            <!-- Clear Button -->
+            <button class="btn btn-danger w-100" onclick="clearAllData()">
+                <i class="fas fa-trash"></i> Clear All
+            </button>
+        </div>
+    </div>
+    
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h4>Analyzing Area...</h4>
+            <p>Fetching facilities and generating AI recommendations</p>
+        </div>
+    </div>
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.draw/1.0.4/leaflet.draw.js"></script>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="{{ url_for('static', filename='js/urban_planning/main_comprehensive.js') }}"></script>
+</body>
+</html>
+

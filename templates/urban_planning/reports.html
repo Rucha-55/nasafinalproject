@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - Urban Planning System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        
+        .container-main {
+            padding: 40px 20px;
+        }
+        
+        .report-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .report-option {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .report-option:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .report-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+        
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .btn-generate:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="fas fa-city"></i> Urban Planning System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-map"></i> Map View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-chart-line"></i> Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendations"><i class="fas fa-lightbulb"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container">
+            <h1 class="text-white text-center mb-5"><i class="fas fa-file-alt"></i> Generate Reports</h1>
+            
+            <!-- Report Options -->
+            <div class="report-card">
+                <h3><i class="fas fa-clipboard-list"></i> Available Report Types</h3>
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="report-option text-center">
+                            <div class="report-icon">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <h4>Comprehensive PDF Report</h4>
+                            <p>Complete analysis including all 10 objectives, maps, charts, and recommendations</p>
+                            <button class="btn btn-generate" onclick="alert('PDF generation feature coming soon!')">
+                                <i class="fas fa-download"></i> Generate PDF
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="report-option text-center">
+                            <div class="report-icon">
+                                <i class="fas fa-file-excel"></i>
+                            </div>
+                            <h4>Excel Data Export</h4>
+                            <p>Raw facility data, coordinates, and statistics in spreadsheet format</p>
+                            <button class="btn btn-generate" onclick="alert('Excel export feature coming soon!')">
+                                <i class="fas fa-download"></i> Export Excel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-6">
+                        <div class="report-option text-center">
+                            <div class="report-icon">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <h4>Visual Dashboard</h4>
+                            <p>Interactive charts and graphs for presentations</p>
+                            <button class="btn btn-generate" onclick="alert('Dashboard export coming soon!')">
+                                <i class="fas fa-download"></i> Export Dashboard
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="report-option text-center">
+                            <div class="report-icon">
+                                <i class="fas fa-file-code"></i>
+                            </div>
+                            <h4>JSON/GeoJSON Export</h4>
+                            <p>Geographic data in standard GIS formats for mapping tools</p>
+                            <button class="btn btn-generate" onclick="alert('GeoJSON export coming soon!')">
+                                <i class="fas fa-download"></i> Export GeoJSON
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Report History -->
+            <div class="report-card">
+                <h3><i class="fas fa-history"></i> Report History</h3>
+                <hr>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> No reports generated yet. Analyze an area on the map to enable report generation.
+                </div>
+                
+                <div class="table-responsive" style="display: none;">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Area</th>
+                                <th>Type</th>
+                                <th>Size</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>2024-01-15</td>
+                                <td>Downtown District</td>
+                                <td>PDF Report</td>
+                                <td>2.5 MB</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary"><i class="fas fa-download"></i></button>
+                                    <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Sharing Options -->
+            <div class="report-card">
+                <h3><i class="fas fa-share-alt"></i> Sharing & Collaboration</h3>
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <button class="btn btn-outline-primary w-100" onclick="alert('Email sharing coming soon!')">
+                            <i class="fas fa-envelope fa-2x mb-2"></i><br>
+                            Email Report
+                        </button>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <button class="btn btn-outline-success w-100" onclick="alert('Link sharing coming soon!')">
+                            <i class="fas fa-link fa-2x mb-2"></i><br>
+                            Generate Share Link
+                        </button>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <button class="btn btn-outline-info w-100" onclick="alert('Cloud storage coming soon!')">
+                            <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i><br>
+                            Save to Cloud
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Report Customization -->
+            <div class="report-card">
+                <h3><i class="fas fa-cog"></i> Report Customization</h3>
+                <hr>
+                
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Include in Report:</strong></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="include-map">
+                            <label class="form-check-label" for="include-map">Map with all markers</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="include-stats">
+                            <label class="form-check-label" for="include-stats">Facility statistics</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="include-ai">
+                            <label class="form-check-label" for="include-ai">AI recommendations</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="include-suggestions">
+                            <label class="form-check-label" for="include-suggestions">Suggested locations</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="include-charts">
+                            <label class="form-check-label" for="include-charts">Charts and graphs</label>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Report Format:</strong></label>
+                        <select class="form-select">
+                            <option>Professional (Detailed)</option>
+                            <option>Executive Summary</option>
+                            <option>Technical Analysis</option>
+                            <option>Presentation Slides</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Include Logo:</strong></label>
+                        <input type="file" class="form-control" accept="image/*">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-generate w-100" onclick="event.preventDefault(); alert('Custom report generation coming soon!')">
+                        <i class="fas fa-magic"></i> Generate Custom Report
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

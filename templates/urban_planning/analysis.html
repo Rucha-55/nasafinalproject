@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis - Urban Planning System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        
+        .container-main {
+            padding: 40px 20px;
+        }
+        
+        .analysis-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .category-box {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        
+        .category-box:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .category-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 24px;
+            color: white;
+        }
+        
+        .progress {
+            height: 25px;
+            border-radius: 12px;
+        }
+        
+        .chart-placeholder {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 60px 20px;
+            text-align: center;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="fas fa-city"></i> Urban Planning System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-map"></i> Map View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/analysis"><i class="fas fa-chart-line"></i> Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendations"><i class="fas fa-lightbulb"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container">
+            <h1 class="text-white text-center mb-5"><i class="fas fa-chart-line"></i> Detailed Analysis</h1>
+            
+            <!-- Overview Chart -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-chart-bar"></i> Facility Distribution Overview</h3>
+                <hr>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-pie fa-4x mb-3"></i>
+                    <h5>Interactive Charts Coming Soon</h5>
+                    <p>Visualizations showing facility distribution across all 10 categories</p>
+                </div>
+            </div>
+            
+            <!-- Category Breakdown -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-layer-group"></i> Category Breakdown</h3>
+                <hr>
+                
+                <!-- Healthcare -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #007bff;">
+                            <i class="fas fa-hospital"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Healthcare Facilities</h5>
+                            <small class="text-muted">Hospitals, Clinics, Doctors</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-primary" role="progressbar" style="width: 75%">75% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 15 facilities | <strong>Suggested:</strong> 3 additional locations</p>
+                </div>
+                
+                <!-- Food Access -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #28a745;">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Food Access Points</h5>
+                            <small class="text-muted">Supermarkets, Groceries</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-success" role="progressbar" style="width: 85%">85% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 24 facilities | <strong>Suggested:</strong> 2 additional locations</p>
+                </div>
+                
+                <!-- Transportation -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #6f42c1;">
+                            <i class="fas fa-bus"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Transportation</h5>
+                            <small class="text-muted">Bus Stops, Stations</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-purple" style="width: 60%; background: #6f42c1;">60% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 12 stops | <strong>Suggested:</strong> 5 additional locations</p>
+                </div>
+                
+                <!-- Parks -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #90ee90;">
+                            <i class="fas fa-tree"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Parks & Recreation</h5>
+                            <small class="text-muted">Parks, Playgrounds</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar" style="width: 50%; background: #90ee90;">50% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 8 parks | <strong>Suggested:</strong> 4 additional locations</p>
+                </div>
+                
+                <!-- Waste Management -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #6c757d;">
+                            <i class="fas fa-recycle"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Waste Management</h5>
+                            <small class="text-muted">Recycling, Disposal</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar bg-secondary" role="progressbar" style="width: 40%">40% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 5 facilities | <strong>Suggested:</strong> 3 additional locations</p>
+                </div>
+                
+                <!-- Energy -->
+                <div class="category-box">
+                    <div class="category-header">
+                        <div class="category-icon" style="background: #ff8c00;">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div>
+                            <h5 class="mb-0">Energy Infrastructure</h5>
+                            <small class="text-muted">Power Stations, Substations</small>
+                        </div>
+                    </div>
+                    <div class="progress mb-2">
+                        <div class="progress-bar" style="width: 90%; background: #ff8c00;">90% Coverage</div>
+                    </div>
+                    <p><strong>Current:</strong> 18 installations | <strong>Suggested:</strong> 1 additional location</p>
+                </div>
+            </div>
+            
+            <!-- Gap Analysis -->
+            <div class="analysis-card">
+                <h3><i class="fas fa-exclamation-circle"></i> Gap Analysis</h3>
+                <hr>
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Draw an area on the map view to generate detailed gap analysis with specific underserved regions and priority rankings.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

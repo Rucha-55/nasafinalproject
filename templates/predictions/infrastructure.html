@@ -1,0 +1,376 @@
+{% extends "base.html" %}
+
+{% block title %}Infrastructure Planning Predictions - Satellite Intelligence Platform{% endblock %}
+
+{% block extra_css %}
+<!-- Space UI Theme already loaded in base.html -->
+<style>
+    /* Three.js Container for Background Animation */
+    #threejs-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        pointer-events: none;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Three.js Container for Background Animation -->
+<div id="threejs-container"></div>
+<div class="space-ui-prediction-container">
+    <div class="space-ui-prediction-header">
+        <h1 class="space-ui-prediction-title">🏗️ Mission Control: Infrastructure Planning Analysis</h1>
+        <p class="space-ui-prediction-subtitle">Plan and optimize infrastructure development using advanced satellite intelligence for smart city construction and transportation networks</p>
+    </div>
+
+    <div class="space-ui-prediction-content">
+        <div class="space-ui-prediction-main">
+            <h2 style="color: var(--text-primary); margin-bottom: 25px; font-size: 1.8rem; font-weight: 600;">🛰️ Infrastructure Mission Analysis</h2>
+            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 30px;">This mission analyzes satellite imagery to plan infrastructure development and optimize transportation networks. Assess current infrastructure capacity and predict future needs for smart city planning.</p>
+            
+            <div class="space-ui-sample-data">
+                <h4><i class="fas fa-road"></i> Sample Infrastructure Intelligence</h4>
+                <div class="space-ui-land-use-item">
+                    <span class="space-ui-land-use-name">Road Network</span>
+                    <span class="space-ui-land-use-percentage">18.5%</span>
+                </div>
+                <div class="space-ui-land-use-item">
+                    <span class="space-ui-land-use-name">Building Density</span>
+                    <span class="space-ui-land-use-percentage">32.1%</span>
+                </div>
+                <div class="space-ui-land-use-item">
+                    <span class="space-ui-land-use-name">Transport Capacity</span>
+                    <span class="space-ui-land-use-percentage">Moderate</span>
+                </div>
+                <div class="space-ui-land-use-item">
+                    <span class="space-ui-land-use-name">Utility Coverage</span>
+                    <span class="space-ui-land-use-percentage">Good</span>
+                </div>
+                <div class="space-ui-land-use-item">
+                    <span class="space-ui-land-use-name">Connectivity</span>
+                    <span class="space-ui-land-use-percentage">High</span>
+                </div>
+            </div>
+
+            <div class="space-ui-metric-grid">
+                <div class="space-ui-metric-card">
+                    <div class="space-ui-metric-icon">🛣️</div>
+                    <div class="space-ui-metric-title">Transportation</div>
+                    <div class="space-ui-metric-description">Road networks and connectivity</div>
+                </div>
+                <div class="space-ui-metric-card">
+                    <div class="space-ui-metric-icon">🏢</div>
+                    <div class="space-ui-metric-title">Building Density</div>
+                    <div class="space-ui-metric-description">Urban development patterns</div>
+                </div>
+                <div class="space-ui-metric-card">
+                    <div class="space-ui-metric-icon">⚡</div>
+                    <div class="space-ui-metric-title">Utilities</div>
+                    <div class="space-ui-metric-description">Infrastructure coverage</div>
+                </div>
+                <div class="space-ui-metric-card">
+                    <div class="space-ui-metric-icon">🌐</div>
+                    <div class="space-ui-metric-title">Smart Systems</div>
+                    <div class="space-ui-metric-description">Digital infrastructure readiness</div>
+                </div>
+            </div>
+
+            <div class="space-ui-info-section">
+                <h4><i class="fas fa-lightbulb"></i> Infrastructure Intelligence</h4>
+                <ul>
+                    <li>Road networks determine urban accessibility</li>
+                    <li>Building density affects infrastructure demand</li>
+                    <li>Smart planning reduces construction costs</li>
+                    <li>Integrated systems improve efficiency</li>
+                </ul>
+            </div>
+
+            <div class="space-ui-info-section">
+                <h4><i class="fas fa-rocket"></i> Mission Applications</h4>
+                <ol>
+                    <li><strong>Transportation:</strong> Optimize road networks</li>
+                    <li><strong>Utilities:</strong> Plan infrastructure systems</li>
+                    <li><strong>Smart Cities:</strong> Deploy digital solutions</li>
+                    <li><strong>Development:</strong> Guide construction projects</li>
+                </ol>
+            </div>
+
+            <div id="resultsSection" style="display: none;" class="space-ui-results-section">
+                <h3><i class="fas fa-chart-bar"></i> Infrastructure Planning Results</h3>
+                <div id="predictionResults" class="space-ui-prediction-result"></div>
+            </div>
+        </div>
+
+        <div class="space-ui-prediction-sidebar">
+            <div class="space-ui-prediction-card">
+                <h3><i class="fas fa-tools"></i> Infrastructure Data Input</h3>
+                
+                <div class="space-ui-sample-data">
+                    <h4><i class="fas fa-info-circle"></i> Sample Infrastructure Data</h4>
+                    <div class="space-ui-land-use-item">
+                        <span class="space-ui-land-use-name">Roads</span>
+                        <span class="space-ui-land-use-percentage">15.7%</span>
+                    </div>
+                    <div class="space-ui-land-use-item">
+                        <span class="space-ui-land-use-name">Buildings</span>
+                        <span class="space-ui-land-use-percentage">25.3%</span>
+                    </div>
+                    <div class="space-ui-land-use-item">
+                        <span class="space-ui-land-use-name">Vegetation</span>
+                        <span class="space-ui-land-use-percentage">35.2%</span>
+                    </div>
+                    <div class="space-ui-land-use-item">
+                        <span class="space-ui-land-use-name">Water</span>
+                        <span class="space-ui-land-use-percentage">12.8%</span>
+                    </div>
+                    <div class="space-ui-land-use-item">
+                        <span class="space-ui-land-use-name">Land</span>
+                        <span class="space-ui-land-use-percentage">11.0%</span>
+                    </div>
+                </div>
+
+                <div class="space-ui-input-group">
+                    <label for="roadPercentage">Road Coverage (%)</label>
+                    <input type="number" id="roadPercentage" min="0" max="100" step="0.1" placeholder="e.g., 15.7">
+                </div>
+
+                <div class="space-ui-input-group">
+                    <label for="buildingPercentage">Building Coverage (%)</label>
+                    <input type="number" id="buildingPercentage" min="0" max="100" step="0.1" placeholder="e.g., 25.3">
+                </div>
+
+                <div class="space-ui-input-group">
+                    <label for="vegetationPercentage">Vegetation Coverage (%)</label>
+                    <input type="number" id="vegetationPercentage" min="0" max="100" step="0.1" placeholder="e.g., 35.2">
+                </div>
+
+                <div class="space-ui-input-group">
+                    <label for="waterPercentage">Water Coverage (%)</label>
+                    <input type="number" id="waterPercentage" min="0" max="100" step="0.1" placeholder="e.g., 12.8">
+                </div>
+
+                <div class="space-ui-input-group">
+                    <label for="landPercentage">Land Coverage (%)</label>
+                    <input type="number" id="landPercentage" min="0" max="100" step="0.1" placeholder="e.g., 11.0">
+                </div>
+
+                <button class="space-ui-generate-btn" onclick="loadLatestAnalysis()" style="background: linear-gradient(135deg, var(--accent-2), #059669); margin-bottom: 10px;">
+                    <i class="fas fa-sync-alt"></i>
+                    Load Latest Mission Data
+                </button>
+
+                <button class="space-ui-generate-btn" onclick="generateInfrastructurePrediction()">
+                    <i class="fas fa-rocket"></i>
+                    Launch Infrastructure Analysis
+                </button>
+            </div>
+
+            <div class="space-ui-prediction-card">
+                <h3><i class="fas fa-external-link-alt"></i> Mission Navigation</h3>
+                <a href="/analysis" class="space-ui-generate-btn" style="width: 100%; margin-bottom: 10px; text-decoration: none; display: block; text-align: center;">
+                    <i class="fas fa-upload"></i>
+                    Analyze New Mission Data
+                </a>
+                <a href="/predictions/urban_growth" class="space-ui-generate-btn space-ui-btn-secondary" style="width: 100%; margin-bottom: 10px; text-decoration: none; display: block; text-align: center;">
+                    <i class="fas fa-city"></i>
+                    Urban Growth Analysis
+                </a>
+                <a href="/predictions/environmental" class="space-ui-generate-btn space-ui-btn-secondary" style="width: 100%; text-decoration: none; display: block; text-align: center;">
+                    <i class="fas fa-leaf"></i>
+                    Environmental Impact Analysis
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Load latest analysis data when page loads
+async function loadLatestAnalysis() {
+    try {
+        const response = await fetch('/api/latest-analysis');
+        const data = await response.json();
+        
+        if (data.success && data.data.statistics) {
+            const stats = data.data.statistics;
+            
+            // Populate input fields with analysis data
+            if (stats.Road) document.getElementById('roadPercentage').value = stats.Road.percentage;
+            if (stats.Building) document.getElementById('buildingPercentage').value = stats.Building.percentage;
+            if (stats.Vegetation) document.getElementById('vegetationPercentage').value = stats.Vegetation.percentage;
+            if (stats.Water) document.getElementById('waterPercentage').value = stats.Water.percentage;
+            if (stats.Land) document.getElementById('landPercentage').value = stats.Land.percentage;
+            
+            // Show notification
+            showNotification(`Infrastructure mission data from ${data.data.image_name} loaded automatically!`, 'success');
+        } else {
+            // No analysis data found - show redirect modal
+            showAnalysisRedirectModal();
+        }
+    } catch (error) {
+        console.log('Could not load latest analysis:', error);
+        showAnalysisRedirectModal();
+    }
+}
+
+// Show modal for analysis redirect
+function showAnalysisRedirectModal() {
+    const modal = document.createElement('div');
+    modal.id = 'analysisModal';
+    modal.style.cssText = `
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+        background: rgba(0,0,0,0.8); z-index: 10000; display: flex; 
+        align-items: center; justify-content: center;
+    `;
+    
+    modal.innerHTML = `
+        <div style="background: var(--card-bg); padding: 40px; border-radius: var(--radius-lg); max-width: 500px; text-align: center; box-shadow: var(--elevation-2); border: 1px solid rgba(255,255,255,0.1);">
+            <i class="fas fa-tools" style="font-size: 3rem; color: var(--accent-1); margin-bottom: 20px;"></i>
+            <h2 style="color: var(--text-primary); margin-bottom: 15px;">Infrastructure Analysis Required</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 30px; line-height: 1.6;">
+                To plan infrastructure development, please first analyze satellite mission data. 
+                Choose your preferred method:
+            </p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <button onclick="redirectToUpload()" style="padding: 15px 20px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: var(--space-900); border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-upload"></i><br>Upload Mission Data
+                </button>
+                <button onclick="redirectToMapAnalysis()" style="padding: 15px 20px; background: linear-gradient(135deg, var(--accent-2), #059669); color: var(--space-900); border: none; border-radius: var(--radius-md); cursor: pointer; font-weight: 600;">
+                    <i class="fas fa-map"></i><br>Analyze Mission Area
+                </button>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 20px;">
+                You'll automatically return here after analysis
+            </p>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Redirect to upload with return URL
+function redirectToUpload() {
+    const currentPath = window.location.pathname;
+    sessionStorage.setItem('returnToAfterAnalysis', currentPath);
+    window.location.href = '/analysis#upload';
+}
+
+// Redirect to map analysis with return URL  
+function redirectToMapAnalysis() {
+    const currentPath = window.location.pathname;
+    sessionStorage.setItem('returnToAfterAnalysis', currentPath);
+    window.location.href = '/analysis#map';
+}
+
+// Show notification helper
+function showNotification(message, type) {
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.innerHTML = `<i class="fas fa-info-circle"></i> ${message}`;
+    notification.style.cssText = `
+        position: fixed; top: 20px; right: 20px; z-index: 1000;
+        background: ${type === 'success' ? 'var(--accent-2)' : 'var(--accent-1)'};
+        color: var(--space-900); padding: 15px 20px; border-radius: var(--radius-sm);
+        box-shadow: var(--elevation-2); max-width: 400px;
+        animation: slideIn 0.3s ease; font-weight: 600;
+    `;
+    
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => notification.remove(), 300);
+    }, 5000);
+}
+
+// Add animation styles
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// Load data when page loads
+document.addEventListener('DOMContentLoaded', loadLatestAnalysis);
+
+async function generateInfrastructurePrediction() {
+    const roadPercentage = parseFloat(document.getElementById('roadPercentage').value) || 0;
+    const buildingPercentage = parseFloat(document.getElementById('buildingPercentage').value) || 0;
+    const vegetationPercentage = parseFloat(document.getElementById('vegetationPercentage').value) || 0;
+    const waterPercentage = parseFloat(document.getElementById('waterPercentage').value) || 0;
+    const landPercentage = parseFloat(document.getElementById('landPercentage').value) || 0;
+
+    if (roadPercentage + buildingPercentage + vegetationPercentage + waterPercentage + landPercentage === 0) {
+        alert('Please enter at least some land use percentage values.');
+        return;
+    }
+
+    const resultsSection = document.getElementById('resultsSection');
+    const resultsDiv = document.getElementById('predictionResults');
+    const generateBtn = document.querySelector('.space-ui-generate-btn');
+
+    // Show loading state
+    resultsSection.style.display = 'block';
+    resultsDiv.innerHTML = '<div class="space-ui-loading"><i class="fas fa-spinner fa-spin"></i> Planning infrastructure development...</div>';
+    generateBtn.disabled = true;
+
+    try {
+        const response = await fetch('/generate-prediction', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                type: 'infrastructure',
+                land_use_stats: {
+                    'Road': {
+                        percentage: roadPercentage,
+                        total_pixels: Math.round(roadPercentage * 1000)
+                    },
+                    'Building': {
+                        percentage: buildingPercentage,
+                        total_pixels: Math.round(buildingPercentage * 1000)
+                    },
+                    'Vegetation': {
+                        percentage: vegetationPercentage,
+                        total_pixels: Math.round(vegetationPercentage * 1000)
+                    },
+                    'Water': {
+                        percentage: waterPercentage,
+                        total_pixels: Math.round(waterPercentage * 1000)
+                    },
+                    'Land': {
+                        percentage: landPercentage,
+                        total_pixels: Math.round(landPercentage * 1000)
+                    }
+                }
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            resultsDiv.innerHTML = `<div class="space-ui-prediction-result">${data.prediction}</div>`;
+        } else {
+            resultsDiv.innerHTML = `<div class="space-ui-error">Error: ${data.error}</div>`;
+        }
+    } catch (error) {
+        resultsDiv.innerHTML = `<div class="space-ui-error">Error generating prediction: ${error.message}</div>`;
+    } finally {
+        generateBtn.disabled = false;
+    }
+}
+</script>
+{% endblock %}

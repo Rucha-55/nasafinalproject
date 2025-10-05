@@ -1,0 +1,461 @@
+{% extends "base.html" %}
+
+{% block title %}API Documentation - Satellite Intelligence Platform{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">API Documentation</h1>
+        <p class="page-subtitle">
+            Complete reference for integrating the Satellite Intelligence Platform into your applications.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 30px; margin-top: 40px;">
+        <!-- API Navigation -->
+        <div class="content-card" style="height: fit-content; position: sticky; top: 20px;">
+            <h3 style="color: #667eea; margin-bottom: 20px;">API Endpoints</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">
+                    <a href="#authentication" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-key"></i>
+                        Authentication
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#upload-endpoint" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-upload"></i>
+                        Upload & Analysis
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#prediction-endpoint" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-brain"></i>
+                        AI Predictions
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#data-models" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-database"></i>
+                        Data Models
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#error-codes" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Error Codes
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#sdk-examples" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px;">
+                        <i class="fas fa-code"></i>
+                        SDK Examples
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- API Content -->
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            <!-- Authentication -->
+            <section id="authentication" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-key"></i> Authentication
+                </h2>
+                <p style="color: #666; margin-bottom: 20px;">
+                    The Satellite Intelligence Platform API uses API keys for authentication. Include your API key in the request headers.
+                </p>
+                
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: #333; margin-bottom: 15px;">Request Headers</h4>
+                    <pre style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>Authorization: Bearer YOUR_API_KEY
+Content-Type: application/json</code></pre>
+                </div>
+
+                <div style="background: #e3f2fd; padding: 20px; border-radius: 8px; border-left: 4px solid #2196f3;">
+                    <h4 style="color: #1976d2; margin-bottom: 10px;">
+                        <i class="fas fa-info-circle"></i> Getting an API Key
+                    </h4>
+                    <p style="color: #666; margin: 0;">Contact our team at <strong>api@satelliteiq.com</strong> to request an API key for your application.</p>
+                </div>
+            </section>
+
+            <!-- Upload Endpoint -->
+            <section id="upload-endpoint" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-upload"></i> Upload & Analysis
+                </h2>
+                
+                <div style="background: #f1f8e9; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #4caf50; margin: 0;">
+                        <span style="background: #4caf50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px;">POST</span>
+                        /api/upload
+                    </h3>
+                </div>
+
+                <p style="color: #666; margin-bottom: 20px;">
+                    Upload a satellite image for AI-powered land use analysis and segmentation.
+                </p>
+
+                <h4 style="color: #333; margin-bottom: 15px;">Request Parameters</h4>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Parameter</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Type</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Required</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>file</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">File</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">✓</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Satellite image file (PNG, JPG, JPEG)</td>
+                            </tr>
+                            <tr style="background: #f9f9f9;">
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>analysis_type</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">String</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Analysis mode: "full" or "quick" (default: "full")</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>include_patches</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Boolean</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">✗</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Extract sample patches (default: true)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h4 style="color: #333; margin-bottom: 15px;">Example Request</h4>
+                <pre style="background: #1e1e1e; color: #dcdcdc; padding: 20px; border-radius: 8px; overflow-x: auto;"><code>curl -X POST "https://api.satelliteiq.com/api/upload" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@satellite_image.jpg" \
+  -F "analysis_type=full" \
+  -F "include_patches=true"</code></pre>
+
+                <h4 style="color: #333; margin-bottom: 15px; margin-top: 25px;">Response</h4>
+                <pre style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>{
+  "success": true,
+  "analysis_id": "abc123def456",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "percentages": {
+    "water": 15.2,
+    "buildings": 35.8,
+    "roads": 12.1,
+    "vegetation": 28.4,
+    "land": 8.5
+  },
+  "segmentation_map": "/static/results/segmentation_abc123def456.png",
+  "sample_patches": {
+    "water": "/static/results/water_patch_abc123def456.jpg",
+    "buildings": "/static/results/buildings_patch_abc123def456.jpg",
+    "roads": "/static/results/roads_patch_abc123def456.jpg",
+    "vegetation": "/static/results/vegetation_patch_abc123def456.jpg",
+    "land": "/static/results/land_patch_abc123def456.jpg"
+  },
+  "processing_time": 2.34
+}</code></pre>
+            </section>
+
+            <!-- Prediction Endpoint -->
+            <section id="prediction-endpoint" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-brain"></i> AI Predictions
+                </h2>
+                
+                <div style="background: #f1f8e9; padding: 15px 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h3 style="color: #4caf50; margin: 0;">
+                        <span style="background: #4caf50; color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 10px;">POST</span>
+                        /api/generate-prediction
+                    </h3>
+                </div>
+
+                <p style="color: #666; margin-bottom: 20px;">
+                    Generate AI-powered predictions and insights based on land use analysis data.
+                </p>
+
+                <h4 style="color: #333; margin-bottom: 15px;">Request Body</h4>
+                <pre style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>{
+  "percentages": {
+    "water": 15.2,
+    "buildings": 35.8,
+    "roads": 12.1,
+    "vegetation": 28.4,
+    "land": 8.5
+  },
+  "prediction_type": "urban_growth",
+  "analysis_scope": "comprehensive",
+  "region_context": "urban_metropolitan"
+}</code></pre>
+
+                <h4 style="color: #333; margin-bottom: 15px;">Prediction Types</h4>
+                <ul style="color: #666; line-height: 1.6; margin-bottom: 20px;">
+                    <li><code>urban_growth</code> - Urban development and expansion analysis</li>
+                    <li><code>environmental</code> - Environmental impact assessment</li>
+                    <li><code>infrastructure</code> - Infrastructure planning recommendations</li>
+                    <li><code>health</code> - Public health and sustainability analysis</li>
+                    <li><code>disaster</code> - Disaster preparedness and climate analysis</li>
+                    <li><code>agriculture</code> - Agricultural and food security assessment</li>
+                </ul>
+
+                <h4 style="color: #333; margin-bottom: 15px;">Example Response</h4>
+                <pre style="background: #f8f9fa; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>{
+  "success": true,
+  "prediction_id": "pred_abc123",
+  "prediction_type": "urban_growth",
+  "generated_at": "2024-01-15T10:35:00Z",
+  "analysis": {
+    "summary": "Based on the land use distribution analysis...",
+    "key_insights": [
+      "High building density (35.8%) indicates mature urban development",
+      "Moderate vegetation coverage (28.4%) suggests good green space planning",
+      "Road infrastructure (12.1%) may need expansion for future growth"
+    ],
+    "recommendations": [
+      "Consider vertical development in existing building zones",
+      "Preserve and expand green corridors",
+      "Plan transportation infrastructure improvements"
+    ],
+    "risk_factors": [
+      "Limited available land for expansion (8.5%)",
+      "Potential urban heat island effects"
+    ]
+  },
+  "confidence_score": 0.92
+}</code></pre>
+            </section>
+
+            <!-- Data Models -->
+            <section id="data-models" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-database"></i> Data Models
+                </h2>
+
+                <h3 style="color: #333; margin-bottom: 15px;">LandUsePercentages</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <pre><code>{
+  "water": number,      // Percentage of water bodies (0-100)
+  "buildings": number,  // Percentage of building coverage (0-100)
+  "roads": number,      // Percentage of road infrastructure (0-100)
+  "vegetation": number, // Percentage of vegetation coverage (0-100)
+  "land": number        // Percentage of bare land (0-100)
+}</code></pre>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px;">AnalysisResult</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
+                    <pre><code>{
+  "analysis_id": string,
+  "timestamp": string,           // ISO 8601 format
+  "percentages": LandUsePercentages,
+  "segmentation_map": string,    // URL to segmentation image
+  "sample_patches": object,      // URLs to sample patches
+  "processing_time": number      // Processing time in seconds
+}</code></pre>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px;">PredictionResult</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <pre><code>{
+  "prediction_id": string,
+  "prediction_type": string,
+  "generated_at": string,        // ISO 8601 format
+  "analysis": {
+    "summary": string,
+    "key_insights": string[],
+    "recommendations": string[],
+    "risk_factors": string[]
+  },
+  "confidence_score": number     // 0.0 to 1.0
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Error Codes -->
+            <section id="error-codes" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-exclamation-triangle"></i> Error Codes
+                </h2>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: #667eea; color: white;">
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Code</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Message</th>
+                                <th style="padding: 12px; text-align: left; border: 1px solid #ddd;">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>400</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Bad Request</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Invalid request parameters or file format</td>
+                            </tr>
+                            <tr style="background: #f9f9f9;">
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>401</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Unauthorized</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Invalid or missing API key</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>413</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Payload Too Large</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">File size exceeds 10MB limit</td>
+                            </tr>
+                            <tr style="background: #f9f9f9;">
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>429</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Too Many Requests</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Rate limit exceeded</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border: 1px solid #ddd;"><code>500</code></td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Internal Server Error</td>
+                                <td style="padding: 12px; border: 1px solid #ddd;">Server processing error</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- SDK Examples -->
+            <section id="sdk-examples" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-code"></i> SDK Examples
+                </h2>
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Python</h3>
+                    <pre style="background: #1e1e1e; color: #dcdcdc; padding: 20px; border-radius: 8px; overflow-x: auto;"><code>import requests
+
+# Upload and analyze image
+def analyze_satellite_image(image_path, api_key):
+    url = "https://api.satelliteiq.com/api/upload"
+    headers = {"Authorization": f"Bearer {api_key}"}
+    
+    with open(image_path, 'rb') as file:
+        files = {'file': file}
+        data = {'analysis_type': 'full', 'include_patches': True}
+        response = requests.post(url, headers=headers, files=files, data=data)
+    
+    return response.json()
+
+# Generate predictions
+def generate_prediction(percentages, prediction_type, api_key):
+    url = "https://api.satelliteiq.com/api/generate-prediction"
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "Content-Type": "application/json"
+    }
+    
+    payload = {
+        "percentages": percentages,
+        "prediction_type": prediction_type,
+        "analysis_scope": "comprehensive"
+    }
+    
+    response = requests.post(url, headers=headers, json=payload)
+    return response.json()</code></pre>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">JavaScript/Node.js</h3>
+                    <pre style="background: #1e1e1e; color: #dcdcdc; padding: 20px; border-radius: 8px; overflow-x: auto;"><code>const FormData = require('form-data');
+const fetch = require('node-fetch');
+const fs = require('fs');
+
+// Upload and analyze image
+async function analyzeSatelliteImage(imagePath, apiKey) {
+    const form = new FormData();
+    form.append('file', fs.createReadStream(imagePath));
+    form.append('analysis_type', 'full');
+    form.append('include_patches', 'true');
+    
+    const response = await fetch('https://api.satelliteiq.com/api/upload', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            ...form.getHeaders()
+        },
+        body: form
+    });
+    
+    return await response.json();
+}
+
+// Generate predictions
+async function generatePrediction(percentages, predictionType, apiKey) {
+    const response = await fetch('https://api.satelliteiq.com/api/generate-prediction', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${apiKey}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            percentages: percentages,
+            prediction_type: predictionType,
+            analysis_scope: 'comprehensive'
+        })
+    });
+    
+    return await response.json();
+}</code></pre>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* API navigation hover effects */
+.content-card a:hover {
+    background-color: rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Code syntax highlighting */
+code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+}
+
+pre {
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+/* Table styling */
+table {
+    font-size: 0.9rem;
+}
+
+/* Method badges */
+.method-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.method-post {
+    background: #4caf50;
+    color: white;
+}
+
+.method-get {
+    background: #2196f3;
+    color: white;
+}
+</style>
+{% endblock %}

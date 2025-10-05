@@ -1,0 +1,235 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation - Satellite Intelligence Platform{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <div class="page-header">
+        <h1 class="page-title">Documentation</h1>
+        <p class="page-subtitle">
+            Comprehensive guide to using the Satellite Intelligence Platform for land use analysis and predictions.
+        </p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 250px 1fr; gap: 30px; margin-top: 40px;">
+        <!-- Sidebar Navigation -->
+        <div class="content-card" style="height: fit-content; position: sticky; top: 20px;">
+            <h3 style="color: #667eea; margin-bottom: 20px;">Navigation</h3>
+            <ul style="list-style: none; padding: 0;">
+                <li style="margin-bottom: 10px;">
+                    <a href="#getting-started" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; transition: background-color 0.3s;">
+                        <i class="fas fa-play-circle"></i>
+                        Getting Started
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#image-analysis" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; transition: background-color 0.3s;">
+                        <i class="fas fa-satellite"></i>
+                        Image Analysis
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#predictions" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; transition: background-color 0.3s;">
+                        <i class="fas fa-chart-line"></i>
+                        Predictions
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#api-reference" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; transition: background-color 0.3s;">
+                        <i class="fas fa-code"></i>
+                        API Reference
+                    </a>
+                </li>
+                <li style="margin-bottom: 10px;">
+                    <a href="#troubleshooting" style="color: #667eea; text-decoration: none; display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 6px; transition: background-color 0.3s;">
+                        <i class="fas fa-tools"></i>
+                        Troubleshooting
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+            <!-- Getting Started -->
+            <section id="getting-started" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-play-circle"></i> Getting Started
+                </h2>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #333; margin-bottom: 15px;">Quick Start Guide</h3>
+                    <ol style="color: #666; line-height: 1.6;">
+                        <li><strong>Upload Satellite Image:</strong> Navigate to the Analysis page and upload your satellite imagery (PNG, JPG, JPEG formats supported).</li>
+                        <li><strong>AI Processing:</strong> Our TensorFlow model will automatically segment the image into different land use categories.</li>
+                        <li><strong>View Results:</strong> Explore the analysis results in the Summary, Sample Patches, and Comparison tabs.</li>
+                        <li><strong>Generate Predictions:</strong> Use the prediction modules to analyze urban growth, environmental impact, and more.</li>
+                    </ol>
+                </div>
+                
+                <div style="background: #f8f9ff; padding: 20px; border-radius: 10px; border-left: 4px solid #667eea;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">
+                        <i class="fas fa-lightbulb"></i> Pro Tip
+                    </h4>
+                    <p style="color: #666; margin: 0;">For best results, use high-resolution satellite images with clear land use distinctions. Images should be at least 256x256 pixels for optimal segmentation accuracy.</p>
+                </div>
+            </section>
+
+            <!-- Image Analysis -->
+            <section id="image-analysis" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-satellite"></i> Image Analysis
+                </h2>
+                
+                <h3 style="color: #333; margin-bottom: 15px;">Land Use Categories</h3>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 25px;">
+                    <div style="background: rgba(54, 162, 235, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #36a2eb;">
+                        <h4 style="color: #36a2eb; margin-bottom: 8px;">Water Bodies</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Rivers, lakes, oceans, and other water features</p>
+                    </div>
+                    <div style="background: rgba(255, 99, 132, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #ff6384;">
+                        <h4 style="color: #ff6384; margin-bottom: 8px;">Buildings</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Residential, commercial, and industrial structures</p>
+                    </div>
+                    <div style="background: rgba(75, 192, 192, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #4bc0c0;">
+                        <h4 style="color: #4bc0c0; margin-bottom: 8px;">Roads</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Streets, highways, and transportation infrastructure</p>
+                    </div>
+                    <div style="background: rgba(255, 205, 86, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #ffcd56;">
+                        <h4 style="color: #ffcd56; margin-bottom: 8px;">Vegetation</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Forests, parks, agricultural land, and green spaces</p>
+                    </div>
+                    <div style="background: rgba(153, 102, 255, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid #9966ff;">
+                        <h4 style="color: #9966ff; margin-bottom: 8px;">Land</h4>
+                        <p style="color: #666; font-size: 0.9rem;">Bare soil, construction sites, and undeveloped areas</p>
+                    </div>
+                </div>
+
+                <h3 style="color: #333; margin-bottom: 15px;">Analysis Features</h3>
+                <ul style="color: #666; line-height: 1.6;">
+                    <li><strong>Real-time Segmentation:</strong> AI-powered image segmentation using deep learning</li>
+                    <li><strong>Percentage Calculation:</strong> Automatic calculation of land use distribution</li>
+                    <li><strong>Visual Overlay:</strong> Color-coded segmentation mask overlay on original image</li>
+                    <li><strong>Sample Extraction:</strong> Automatic extraction of representative patches for each category</li>
+                </ul>
+            </section>
+
+            <!-- Predictions -->
+            <section id="predictions" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-chart-line"></i> Prediction Modules
+                </h2>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                    <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">Urban Growth & Expansion</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Analyze urban development patterns and predict future expansion areas.</p>
+                        <ul style="color: #666; font-size: 0.9rem;">
+                            <li>Population growth projections</li>
+                            <li>Infrastructure development needs</li>
+                            <li>Urban sprawl analysis</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">Environmental Impact</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Assess environmental changes and sustainability metrics.</p>
+                        <ul style="color: #666; font-size: 0.9rem;">
+                            <li>Carbon footprint analysis</li>
+                            <li>Biodiversity assessment</li>
+                            <li>Green space planning</li>
+                        </ul>
+                    </div>
+                    
+                    <div style="border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px;">
+                        <h4 style="color: #667eea; margin-bottom: 10px;">Infrastructure Planning</h4>
+                        <p style="color: #666; font-size: 0.9rem; margin-bottom: 15px;">Optimize infrastructure development and resource allocation.</p>
+                        <ul style="color: #666; font-size: 0.9rem;">
+                            <li>Transportation networks</li>
+                            <li>Utility planning</li>
+                            <li>Emergency services coverage</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- API Reference -->
+            <section id="api-reference" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-code"></i> API Reference
+                </h2>
+                
+                <h3 style="color: #333; margin-bottom: 15px;">Endpoints</h3>
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">POST /upload</h4>
+                    <p style="color: #666; margin-bottom: 10px;">Upload and analyze satellite imagery</p>
+                    <pre style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>{
+  "file": "image_file.jpg",
+  "analysis_type": "full"
+}</code></pre>
+                </div>
+
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">POST /generate-prediction</h4>
+                    <p style="color: #666; margin-bottom: 10px;">Generate AI-powered predictions based on land use data</p>
+                    <pre style="background: #fff; padding: 15px; border-radius: 6px; border: 1px solid #e0e0e0; overflow-x: auto;"><code>{
+  "percentages": {
+    "water": 15.2,
+    "buildings": 35.8,
+    "roads": 12.1,
+    "vegetation": 28.4,
+    "land": 8.5
+  },
+  "prediction_type": "urban_growth"
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Troubleshooting -->
+            <section id="troubleshooting" class="content-card">
+                <h2 style="color: #667eea; margin-bottom: 20px;">
+                    <i class="fas fa-tools"></i> Troubleshooting
+                </h2>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div style="border-left: 4px solid #ff6b6b; padding-left: 20px;">
+                        <h4 style="color: #ff6b6b; margin-bottom: 10px;">Upload Issues</h4>
+                        <p style="color: #666;"><strong>Problem:</strong> Image upload fails or takes too long</p>
+                        <p style="color: #666;"><strong>Solution:</strong> Ensure image is under 10MB and in supported format (PNG, JPG, JPEG)</p>
+                    </div>
+                    
+                    <div style="border-left: 4px solid #ffa726; padding-left: 20px;">
+                        <h4 style="color: #ffa726; margin-bottom: 10px;">Low Accuracy Results</h4>
+                        <p style="color: #666;"><strong>Problem:</strong> Segmentation results appear inaccurate</p>
+                        <p style="color: #666;"><strong>Solution:</strong> Use higher resolution images with clear contrast between land use types</p>
+                    </div>
+                    
+                    <div style="border-left: 4px solid #66bb6a; padding-left: 20px;">
+                        <h4 style="color: #66bb6a; margin-bottom: 10px;">Prediction Errors</h4>
+                        <p style="color: #666;"><strong>Problem:</strong> AI predictions fail to generate</p>
+                        <p style="color: #666;"><strong>Solution:</strong> Check internet connection and ensure valid analysis data exists</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<style>
+/* Smooth scrolling for anchor links */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Hover effects for sidebar navigation */
+.content-card a:hover {
+    background-color: rgba(102, 126, 234, 0.1) !important;
+}
+
+/* Code blocks styling */
+pre code {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+</style>
+{% endblock %}

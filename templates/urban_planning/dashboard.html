@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Urban Planning System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        
+        .container-main {
+            padding: 40px 20px;
+        }
+        
+        .dashboard-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s;
+        }
+        
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .stat-number {
+            font-size: 48px;
+            font-weight: bold;
+        }
+        
+        .stat-label {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+        
+        .priority-alert {
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid;
+        }
+        
+        .priority-critical {
+            background: #ffe6e6;
+            border-color: #dc3545;
+        }
+        
+        .priority-high {
+            background: #fff3cd;
+            border-color: #ffc107;
+        }
+        
+        .priority-moderate {
+            background: #d1ecf1;
+            border-color: #17a2b8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="fas fa-city"></i> Urban Planning System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-map"></i> Map View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-chart-line"></i> Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommendations"><i class="fas fa-lightbulb"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container">
+            <h1 class="text-white text-center mb-5"><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h1>
+            
+            <!-- Quick Stats -->
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-number">10</div>
+                        <div class="stat-label">Objectives Tracked</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <div class="stat-number" id="total-facilities">0</div>
+                        <div class="stat-label">Total Facilities</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="stat-number" id="total-suggestions">0</div>
+                        <div class="stat-label">Suggestions Made</div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stat-box" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                        <div class="stat-number" id="area-analyzed">0</div>
+                        <div class="stat-label">Area (km²)</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Priority Alerts -->
+            <div class="dashboard-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Priority Alerts</h3>
+                <hr>
+                <div id="priority-alerts">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Draw an area on the map to generate priority alerts and recommendations.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- System Status -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <h4><i class="fas fa-heartbeat"></i> System Status</h4>
+                        <hr>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> OpenStreetMap API: <strong>Connected</strong></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Groq AI: <strong>Active</strong></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> All 10 Objectives: <strong>Enabled</strong></li>
+                            <li class="mb-2"><i class="fas fa-check-circle text-success"></i> Layer System: <strong>Operational</strong></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="dashboard-card">
+                        <h4><i class="fas fa-list-check"></i> Quick Actions</h4>
+                        <hr>
+                        <a href="/" class="btn btn-primary w-100 mb-2"><i class="fas fa-map"></i> Analyze New Area</a>
+                        <a href="/analysis" class="btn btn-info w-100 mb-2"><i class="fas fa-chart-line"></i> View Detailed Analysis</a>
+                        <a href="/recommendations" class="btn btn-success w-100 mb-2"><i class="fas fa-lightbulb"></i> AI Recommendations</a>
+                        <a href="/reports" class="btn btn-warning w-100"><i class="fas fa-download"></i> Generate Report</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 10 Objectives Overview -->
+            <div class="dashboard-card">
+                <h3><i class="fas fa-bullseye"></i> 10 Urban Planning Objectives</h3>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Food Access:</strong> Supermarkets & grocery stores</li>
+                            <li><strong>Housing:</strong> Residential development</li>
+                            <li><strong>Transportation:</strong> Public transit accessibility</li>
+                            <li><strong>Pollution Control:</strong> Industrial monitoring</li>
+                            <li><strong>Healthcare:</strong> Medical facility coverage</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Parks & Recreation:</strong> Green space availability</li>
+                            <li><strong>Urban Growth:</strong> Development planning</li>
+                            <li><strong>Public Health:</strong> Extreme weather preparedness</li>
+                            <li><strong>Environmental Protection:</strong> Habitat conservation</li>
+                            <li><strong>Agriculture:</strong> Farmland development</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Waste Management:</strong> Recycling & disposal facilities</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li><strong>Energy Access:</strong> Power infrastructure</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

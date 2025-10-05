@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recommendations - Urban Planning System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            color: white !important;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        
+        .container-main {
+            padding: 40px 20px;
+        }
+        
+        .recommendation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .recommendation-item {
+            border-left: 4px solid;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background: #f8f9fa;
+        }
+        
+        .recommendation-item.critical {
+            border-color: #dc3545;
+            background: #ffe6e6;
+        }
+        
+        .recommendation-item.high {
+            border-color: #ffc107;
+            background: #fff3cd;
+        }
+        
+        .recommendation-item.moderate {
+            border-color: #17a2b8;
+            background: #d1ecf1;
+        }
+        
+        .recommendation-item.low {
+            border-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .action-steps {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .action-steps li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/"><i class="fas fa-city"></i> Urban Planning System</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/"><i class="fas fa-map"></i> Map View</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/analysis"><i class="fas fa-chart-line"></i> Analysis</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/recommendations"><i class="fas fa-lightbulb"></i> Recommendations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reports"><i class="fas fa-file-alt"></i> Reports</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Main Content -->
+    <div class="container-main">
+        <div class="container">
+            <h1 class="text-white text-center mb-5"><i class="fas fa-lightbulb"></i> AI-Powered Recommendations</h1>
+            
+            <!-- AI Badge -->
+            <div class="text-center mb-4">
+                <span class="ai-badge">
+                    <i class="fas fa-robot"></i> Powered by Groq AI (LLaMA 3.1 70B)
+                </span>
+            </div>
+            
+            <!-- Critical Recommendations -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-exclamation-triangle text-danger"></i> Critical Priority</h3>
+                <hr>
+                
+                <div class="recommendation-item critical">
+                    <h5><i class="fas fa-hospital"></i> Healthcare Facilities</h5>
+                    <p><strong>Status:</strong> Critical shortage detected</p>
+                    <p><strong>Recommendation:</strong> Immediate construction of 3 healthcare facilities required to meet WHO standards. Current coverage leaves 40% of population beyond acceptable 5km range.</p>
+                    <div class="action-steps">
+                        <h6><i class="fas fa-tasks"></i> Action Steps:</h6>
+                        <ol>
+                            <li>Prioritize construction in northeastern sector (red dot markers on map)</li>
+                            <li>Establish temporary medical camps within 30 days</li>
+                            <li>Allocate budget for 24-hour emergency services</li>
+                            <li>Coordinate with health department for staffing</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- High Priority -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-star text-warning"></i> High Priority</h3>
+                <hr>
+                
+                <div class="recommendation-item high">
+                    <h5><i class="fas fa-bus"></i> Transportation Infrastructure</h5>
+                    <p><strong>Status:</strong> Inadequate coverage in western zones</p>
+                    <p><strong>Recommendation:</strong> Add 5 bus stops to improve connectivity. Current public transport accessibility is 60%, below the 85% target.</p>
+                    <div class="action-steps">
+                        <h6><i class="fas fa-tasks"></i> Action Steps:</h6>
+                        <ol>
+                            <li>Install bus stops at suggested red dot locations</li>
+                            <li>Extend existing route to cover underserved areas</li>
+                            <li>Implement real-time tracking systems</li>
+                            <li>Increase frequency during peak hours</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item high">
+                    <h5><i class="fas fa-tree"></i> Parks & Recreation</h5>
+                    <p><strong>Status:</strong> Below WHO recommended green space standard</p>
+                    <p><strong>Recommendation:</strong> Develop 4 new parks to achieve 9m² per capita green space. Current availability is only 4m² per capita.</p>
+                    <div class="action-steps">
+                        <h6><i class="fas fa-tasks"></i> Action Steps:</h6>
+                        <ol>
+                            <li>Acquire land at suggested locations (red dots)</li>
+                            <li>Design multi-age playgrounds and exercise areas</li>
+                            <li>Plant native species for environmental benefits</li>
+                            <li>Install walking/jogging paths and lighting</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Moderate Priority -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-info-circle text-info"></i> Moderate Priority</h3>
+                <hr>
+                
+                <div class="recommendation-item moderate">
+                    <h5><i class="fas fa-utensils"></i> Food Access</h5>
+                    <p><strong>Status:</strong> Moderate gaps in southern region</p>
+                    <p><strong>Recommendation:</strong> Establish 2 additional grocery stores to eliminate food deserts. Current coverage leaves some residents beyond 2km range.</p>
+                    <div class="action-steps">
+                        <h6><i class="fas fa-tasks"></i> Action Steps:</h6>
+                        <ol>
+                            <li>Incentivize grocery chains to open at suggested locations</li>
+                            <li>Support local farmers markets in interim</li>
+                            <li>Establish fresh food delivery programs</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="recommendation-item moderate">
+                    <h5><i class="fas fa-recycle"></i> Waste Management</h5>
+                    <p><strong>Status:</strong> Adequate but expansion needed</p>
+                    <p><strong>Recommendation:</strong> Add 3 recycling centers to improve sustainability. Current recycling rate is 35%, target is 50%.</p>
+                    <div class="action-steps">
+                        <h6><i class="fas fa-tasks"></i> Action Steps:</h6>
+                        <ol>
+                            <li>Build recycling centers at red dot locations</li>
+                            <li>Launch public awareness campaign</li>
+                            <li>Implement door-to-door collection</li>
+                            <li>Partner with recycling companies</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Low Priority / Maintenance -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-check-circle text-success"></i> Low Priority / Maintain Current Status</h3>
+                <hr>
+                
+                <div class="recommendation-item low">
+                    <h5><i class="fas fa-bolt"></i> Energy Infrastructure</h5>
+                    <p><strong>Status:</strong> Excellent coverage</p>
+                    <p><strong>Recommendation:</strong> Continue monitoring and maintain current infrastructure. Consider renewable energy integration for future expansion.</p>
+                </div>
+                
+                <div class="recommendation-item low">
+                    <h5><i class="fas fa-tractor"></i> Agricultural Development</h5>
+                    <p><strong>Status:</strong> Balanced with urban needs</p>
+                    <p><strong>Recommendation:</strong> Current agricultural land allocation is appropriate. Focus on sustainable farming practices.</p>
+                </div>
+            </div>
+            
+            <!-- Overall Strategy -->
+            <div class="recommendation-card">
+                <h3><i class="fas fa-chess"></i> Overall Urban Development Strategy</h3>
+                <hr>
+                <p><strong>AI Assessment:</strong> This area shows characteristics of a growing semi-urban region with immediate healthcare needs and opportunities for sustainable development.</p>
+                
+                <h5 class="mt-4">Key Priorities (Next 12 Months):</h5>
+                <ol>
+                    <li><strong>Healthcare Expansion:</strong> Address critical shortage with 3 new facilities</li>
+                    <li><strong>Transit Connectivity:</strong> Improve public transportation coverage</li>
+                    <li><strong>Green Space Development:</strong> Create accessible parks</li>
+                    <li><strong>Food Security:</strong> Eliminate food deserts</li>
+                    <li><strong>Waste Infrastructure:</strong> Enhance recycling capacity</li>
+                </ol>
+                
+                <h5 class="mt-4">Long-term Vision (3-5 Years):</h5>
+                <ul>
+                    <li>Achieve 100% healthcare coverage within 5km radius</li>
+                    <li>Reach 85% public transit accessibility</li>
+                    <li>Meet WHO green space recommendations (9m² per capita)</li>
+                    <li>Implement smart city initiatives for pollution monitoring</li>
+                    <li>Develop climate resilience infrastructure</li>
+                </ul>
+                
+                <div class="alert alert-info mt-4">
+                    <i class="fas fa-map-marked-alt"></i> <strong>Note:</strong> All suggested locations are marked with RED DOTS on the map. Use the filter panel to toggle visibility of each category.
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
